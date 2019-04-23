@@ -1,5 +1,6 @@
 * Merseburg Incantation                                            :TOC_5_gh:
   - [[#introduction-and-overview][Introduction and Overview]]
+    - [[#we-support-c17-and-beyond][We support C++17 and beyond]]
     - [[#why-merseburg-incantation][Why "Merseburg Incantation"?]]
 
 ** Introduction and Overview
@@ -15,6 +16,16 @@
    and easy as possible, using reasonsable defaults. MZ will
    query std::thread::hardware_concurrency to get the number
    of threads possible, and if this returns a '0', will default to 4.
+
+*** We support C++17 and beyond
+    We shall be primarily relying on C++17 and its new features, and
+    as a result, this is not gauranteed to work for C++14 and earlier.
+    I will accept pull requests to support earlier compilers on a seperate
+    branch, however.
+
+    Also, this is written to be a header include, so it should work "everywhere".
+    however, I am only verifying this under Linux. I will not put anything
+    that is platform specific in this code if I can at all avoid doing so.
 
 *** Why "Merseburg Incantation"?
     I usually wind up consulting Greek Mythology when I want to find a snazzy name

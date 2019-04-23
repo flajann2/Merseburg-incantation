@@ -3,8 +3,8 @@
     - [[#why-merseburg-incantation][Why "Merseburg Incantation"?]]
 
 ** Introduction and Overview
-   The Merseburg Incantation (German: Merseburger
-   Zaubersprüche, and hereafter referred to as 'MZ') is
+   The Merseburg Incantation (German: Die Merseburger
+   Zauberspruch, and hereafter referred to as 'MZ') is
    a simple way to divide the processing of a
    (presumably large) collection across multiple
    threads. Ideally, you want to divide the work among

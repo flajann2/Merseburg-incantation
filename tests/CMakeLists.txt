@@ -15,6 +15,8 @@ include_directories(
 
 foreach(TEST_PATH ${TESTS})
   get_filename_component(T ${TEST_PATH} NAME_WE)
+
+  add_executable(${T} ${TEST_PATH})
   
   target_link_libraries(${T}
     ${LIBRARY_DEPENDENCIES}
@@ -22,5 +24,5 @@ foreach(TEST_PATH ${TESTS})
     gmock gmock_main
     )
 
-  add_gtest(${T} ${TEST_PATH} PUBLIC MERSEBERG) 
+  add_test(${T} ${TEST_PATH} PUBLIC MERSEBERG) 
 endforeach()

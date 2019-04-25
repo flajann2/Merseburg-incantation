@@ -26,8 +26,8 @@ namespace {
     auto single = sigma(container.begin(), container.end());
     cout << "*** single = " << single << endl;
 
-    auto imp = incantation(container, sigma);
-    imp.invoke();
+    auto imp = incantation(container);
+    imp.invoke(sigma);
     auto cocurrent = imp([](auto res) {
       int s = 0;
       for (auto a : res) {
@@ -35,7 +35,8 @@ namespace {
       }
       return s;
     });
-    EXPECT_EQ(single, cocurrent);
+    cout << "*** thread count is " << imp.threads() << endl;
+    EXPECT_EQ(single, cocurrent);    
   }
 }  // namespace
 

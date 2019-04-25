@@ -9,7 +9,7 @@ namespace {
 
   TEST(incantation, basic_test) {
     auto container = std::vector<int>{};
-    for (int i = 0; i < 117; ++i) {
+    for (int i = 0; i < 1137; ++i) {
       container.push_back(i);
     }
 
@@ -21,10 +21,7 @@ namespace {
       return static_cast<int>(sum);
     };
 
-    // single threaded operation
     auto single = sigma(container.begin(), container.end());
-    cout << "*** single = " << single << endl;
-
     auto imp = incantation(container);
     imp.invoke(sigma);
     imp.join();

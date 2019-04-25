@@ -14,11 +14,12 @@ namespace merseberg {
     using args_t = std::tuple<Args...>;
     using value_t = typename Container::value_type;
     using locker_t = std::lock_guard<std::mutex>;
+    const std::size_t default_threads = 4;
     
     // TODO: make this more flexible.
     const std::size_t m_thread_count = (std::thread::hardware_concurrency() > 0)
                                            ? std::thread::hardware_concurrency()
-                                           : 4;
+                                           : default_threads;
     args_t m_tuple;
     std::vector<std::thread> m_threads{};
     std::mutex m_invoke_mutex;
@@ -55,7 +56,7 @@ namespace merseberg {
       auto i = m_container.begin();
       while (i < m_container.end()) {
         auto j = i + size_bucket + (dust-- > 0 ? 1 : 0);
-        m_threads.emplace_back(std::thread([&]() {
+        m_threads.emplace_back(std::thread([=]() {
           invoke_task(f, i, j, std::index_sequence_for<Args...>());
         }));
         i = j;

@@ -9,13 +9,12 @@ namespace {
 
   TEST(incantation, basic_test) {
     auto container = std::vector<int>{};
-    for (int i = 0; i < 1024; ++i) {
+    for (int i = 0; i < 117; ++i) {
       container.push_back(i);
     }
 
-    std::atomic<int> sum = 0;
-
-    auto sigma = [&sum](auto begin, auto end) {
+    auto sigma = [](auto begin, auto end) {
+      int sum = 0;
       for (auto pi = begin; pi != end; ++pi) {
         sum += *pi;
       }
@@ -28,15 +27,15 @@ namespace {
 
     auto imp = incantation(container);
     imp.invoke(sigma);
-    auto cocurrent = imp([](auto res) {
+    imp.join();
+    auto concurrent = imp([](auto res) {
       int s = 0;
       for (auto a : res) {
         s += a;
       }
       return s;
     });
-    cout << "*** thread count is " << imp.threads() << endl;
-    EXPECT_EQ(single, cocurrent);    
+    EXPECT_EQ(single, concurrent);    
   }
 }  // namespace
 

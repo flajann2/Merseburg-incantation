@@ -1,0 +1,11 @@
+############################
+# Tell the user project where to find our headers
+set(MERSEBERG_INCLUDE_DIR "@MERSEBERG_INCLUDE_DIR@")
+
+# Find required dependency
+find_package(YYY REQUIRED)
+
+# Set things up for the user-project
+set(MERSEBERG_INCLUDE_DIRS "${MERSEBERG_INCLUDE_DIR}" ${YYY_INCLUDE_DIRS})
+set(MERSEBERG_LIBRARIES ${YYY_LIBRARIES})
+#############################

@@ -2,6 +2,7 @@
   - [[#introduction-and-overview][Introduction and Overview]]
     - [[#we-support-c17-and-beyond][We support C++17 and beyond]]
     - [[#why-merseburg-incantation][Why "Merseburg Incantation"?]]
+  - [[#example][Example]]
 
 ** Introduction and Overview
    The Merseburg Incantation (German: Die Merseburger
@@ -40,3 +41,47 @@
     and
 
     https://althochdeutsch.fandom.com/de/wiki/Merseburger_Zauberspr%C3%BCche
+** Example
+   This is taken from the unit test in this project.
+   #+name: example 1
+   #+begin_src c++
+#include <atomic>
+#include <merseberg>
+#include "gtest/gtest.h"
+
+namespace {
+  TEST(merseberg_incantation, basic_test) {
+    auto container = std::vector<int>{};
+    for (int i = 0; i < 1137; ++i) {
+      container.push_back(i);
+    }
+
+    auto sigma = [](auto begin, auto end) {
+      int sum = 0;
+      for (auto pi = begin; pi != end; ++pi) {
+        sum += *pi;
+      }
+      return static_cast<int>(sum);
+    };
+
+    auto single = sigma(container.begin(), container.end());
+    auto imp = merseberg::incantation(container);
+    imp.invoke(sigma);
+    imp.join();
+    auto concurrent = imp([](auto res) {
+      int s = 0;
+      for (auto a : res) {
+        s += a;
+      }
+      return s;
+    });
+    EXPECT_EQ(single, concurrent);    
+  }
+}  // namespace
+
+int main(int argc, char **argv) {
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}
+   #+end_src
+

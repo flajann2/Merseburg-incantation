@@ -1,13 +1,9 @@
 #include <atomic>
-#include <iostream>
 #include <merseberg>
 #include "gtest/gtest.h"
 
 namespace {
-  using namespace merseberg;
-  using namespace std;
-
-  TEST(incantation, basic_test) {
+  TEST(merseberg_incantation, basic_test) {
     auto container = std::vector<int>{};
     for (int i = 0; i < 1137; ++i) {
       container.push_back(i);
@@ -22,7 +18,7 @@ namespace {
     };
 
     auto single = sigma(container.begin(), container.end());
-    auto imp = incantation(container);
+    auto imp = merseberg::incantation(container);
     imp.invoke(sigma);
     imp.join();
     auto concurrent = imp([](auto res) {

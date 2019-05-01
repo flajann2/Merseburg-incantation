@@ -25,7 +25,7 @@ include(FeatureSummary)
 
 add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND})
 
-if (ENABLE_DOCS)
+if (ENABLE_DOXYGEN)
   add_subdirectory(docs)
 endif()
 

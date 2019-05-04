@@ -56,7 +56,7 @@ namespace merseberg {
       auto i = m_container.begin();
       while (i < m_container.end()) {
         auto j = i + size_bucket + (dust-- > 0 ? 1 : 0);
-        m_threads.emplace_back(std::thread([=]() {
+        m_threads.push_back(std::thread([=]() {
           invoke_task(f, i, j, std::index_sequence_for<Args...>());
         }));
         i = j;

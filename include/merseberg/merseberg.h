@@ -1,10 +1,10 @@
 #pragma once
 
 #include <functional>
+#include <mutex>
 #include <thread>
 #include <tuple>
 #include <vector>
-#include <mutex>
 
 namespace merseberg {
   /**
@@ -15,15 +15,14 @@ namespace merseberg {
     using value_t = typename Container::value_type;
     using locker_t = std::lock_guard<std::mutex>;
     const std::size_t default_threads = 4;
-    
-    // TODO: make this more flexible.
-    const std::size_t m_thread_count = (std::thread::hardware_concurrency() > 0)
-                                           ? std::thread::hardware_concurrency()
-                                           : default_threads;
+
+    std::size_t m_thread_count = (std::thread::hardware_concurrency() > 0)
+                                     ? std::thread::hardware_concurrency()
+                                     : default_threads;
     args_t m_tuple;
     std::vector<std::thread> m_threads{};
     std::mutex m_invoke_mutex;
-    
+
     /// compliation of all results from all threads
     std::vector<value_t> m_results{};
 
@@ -39,6 +38,10 @@ namespace merseberg {
     }
 
    public:
+    /**
+     * @param Workers -- Number of workers to override the default setting
+     * matching number of cores
+     */
     incantation(const Container& c, Args&&... args)
         : m_container(c), m_tuple(std::tuple<Args...>(args...)) {}
 
@@ -49,7 +52,11 @@ namespace merseberg {
      * container among all threads.
      */
     template <class Function>
-    void invoke(Function&& f) {
+    auto& invoke(Function&& f, std::size_t thread_count = 0) {
+      if (thread_count != 0) {
+        m_thread_count = thread_count;
+      }
+
       std::size_t size_bucket = m_container.size() / m_thread_count;
       std::size_t dust = m_container.size() % m_thread_count;
 
@@ -61,19 +68,23 @@ namespace merseberg {
         }));
         i = j;
       }
+      return *this;
     }
 
     /**
      * Wait until all threads are completed.
      */
-    void join() {
-      for (auto& t : m_threads) { t.join(); }
+    auto& join() {
+      for (auto& t : m_threads) {
+        t.join();
+      }
+      return *this;
     }
 
     /**
      * Detach all running threads. You will not be able to join anymore.
      */
-    void detach() {}
+    auto& detach() { return *this; }
 
     /**
      * Reduction function / lambda passed in here.

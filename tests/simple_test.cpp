@@ -28,8 +28,23 @@ namespace {
       }
       return s;
     });
-    EXPECT_EQ(single, concurrent);    
+    EXPECT_EQ(single, concurrent);
   }
+
+  TEST(merseberg_incantation, setting_thread_count) {
+    auto container = std::vector<int>{0, 1, 2, 3};
+
+    auto imp = merseberg::incantation(container);
+    imp.invoke([](auto, auto){ return 0; }, 2).join();
+    EXPECT_EQ(2, imp.threads());
+
+
+    auto imp2 = merseberg::incantation(container);
+    imp2.invoke([](auto, auto){ return 0; }, 200).join();
+    EXPECT_EQ(200, imp2.threads());
+    
+  }
+
 }  // namespace
 
 int main(int argc, char **argv) {

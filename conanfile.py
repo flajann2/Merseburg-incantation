@@ -6,8 +6,8 @@ class MerseburgincantationConan(ConanFile):
     version = "0.0.1"
     license = "MIT"
     author = "Fred Mitchell fred.mitchell@gmx.de"
-    url = "<Package recipe repository url here, for issues about the package>"
-    description = "<Description of Merseburgincantation here>"
+    url = "https://github.com/flajann2/merseburg-incantation.git"
+    description = "Merseburg process collections as theads across your cores"
     topics = ("concurrency", "threads", "workers", "cores")
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False]}
@@ -36,11 +36,6 @@ conan_basic_setup()''')
 
     def package(self):
         self.copy("*.h", dst="include", src="merseburg-incantation")
-        self.copy("*merseburg-incantation.lib", dst="lib", keep_path=False)
-        self.copy("*.dll", dst="bin", keep_path=False)
-        self.copy("*.so", dst="lib", keep_path=False)
-        self.copy("*.dylib", dst="lib", keep_path=False)
-        self.copy("*.a", dst="lib", keep_path=False)
 
     def package_info(self):
         self.cpp_info.libs = ["merseburg-incantation"]
